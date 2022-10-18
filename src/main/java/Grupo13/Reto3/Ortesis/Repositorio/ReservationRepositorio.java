@@ -5,9 +5,15 @@
 package Grupo13.Reto3.Ortesis.Repositorio;
 
 import Grupo13.Reto3.Ortesis.Interface.ReservationInterface;
+import Grupo13.Reto3.Ortesis.Modelo.Client;
 import Grupo13.Reto3.Ortesis.Modelo.Reservation;
+
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
+import Grupo13.Reto3.Ortesis.Report.ClientContact;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -37,6 +43,24 @@ public class ReservationRepositorio {
     public void delete(Reservation reservation){
         reservationInterface.delete(reservation);
     }
-    
-  
+
+
+    public List<ClientContact> getTopClients() {
+        List<ClientContact> resultado = new ArrayList<>();
+        List<Object[]> reporte = reservationInterface.countTotalReservationByClient();
+
+        for (int i = 0; i < reporte.size(); i++) {
+            resultado.add(new ClientContact((Long) reporte.get(i)[1], (Client) reporte.get(i)[0]));
+        }
+        return resultado;
+    }
+
+    public List<Reservation> getReservacionTiempo(Date fechaInicial, Date fechaFinal){
+        return reservationInterface.findAllByStartDateAfterAndStartDateBefore(fechaInicial,fechaFinal);
+    }
+    public List<Reservation> getReservacionByStatus(String status){
+        return reservationInterface.findAllByStatus(status);
+    }
+
+
 }

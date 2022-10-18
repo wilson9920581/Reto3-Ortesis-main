@@ -4,9 +4,15 @@
  */
 package Grupo13.Reto3.Ortesis.Servicio;
 
+import Grupo13.Reto3.Ortesis.Report.ClientContact;
+import Grupo13.Reto3.Ortesis.Report.StatusReserve;
 import Grupo13.Reto3.Ortesis.Repositorio.ReservationRepositorio;
 import Grupo13.Reto3.Ortesis.Modelo.Reservation;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +76,34 @@ public class ReservationServicio {
         }).orElse(false);
         return d;
     }
-    
-   
+
+    public List<ClientContact>getTopClients(){
+        return reservationRepositorio.getTopClients();
+    }
+    public StatusReserve getReservacionStatus(){
+
+        List<Reservation> completed = reservationRepositorio.getReservacionByStatus("completed");
+        List<Reservation> cancelled = reservationRepositorio.getReservacionByStatus("cancelled");
+
+        return new StatusReserve(completed.size(), cancelled.size());
+    }
+
+    public List<Reservation> getReservacionTiempo(String fechaInicial,String fechaFinal) {
+        SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd");
+
+        Date fechaUno = new Date();
+        Date fechaDos = new Date();
+
+        try {
+            fechaUno = parser.parse(fechaInicial);
+            fechaDos = parser.parse(fechaFinal);
+        } catch (ParseException evt) {
+            evt.printStackTrace();
+        }
+        if (fechaUno.before(fechaDos)) {
+            return reservationRepositorio.getReservacionTiempo(fechaUno, fechaDos);
+        } else {
+            return new ArrayList<>();
+        }
+    }
 }

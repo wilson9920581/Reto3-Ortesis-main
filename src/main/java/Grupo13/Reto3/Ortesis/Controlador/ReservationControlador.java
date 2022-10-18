@@ -5,6 +5,8 @@
 package Grupo13.Reto3.Ortesis.Controlador;
 
 import Grupo13.Reto3.Ortesis.Modelo.Reservation;
+import Grupo13.Reto3.Ortesis.Report.ClientContact;
+import Grupo13.Reto3.Ortesis.Report.StatusReserve;
 import Grupo13.Reto3.Ortesis.Servicio.ReservationServicio;
 import java.util.List;
 import java.util.Optional;
@@ -44,5 +46,19 @@ public class ReservationControlador {
     public boolean delete(@PathVariable("id") int id){
         return reservationServicio.deleteReservation(id);
     }
-  
+
+    @GetMapping("/report-status")
+    public StatusReserve getStatusReservas() {
+        return reservationServicio.getReservacionStatus();
+    }
+
+    @GetMapping("/report-dates/{dateOne}/{dateTwo}")
+    public List<Reservation> getReservasTiempo(@PathVariable("dateOne") String fechaInicial,@PathVariable("dateTwo") String fechaFinal) {
+        return reservationServicio.getReservacionTiempo(fechaInicial, fechaFinal);
+    }
+
+    @GetMapping("/report-clients")
+    public List<ClientContact> getReservationReportClient() {
+        return reservationServicio.getTopClients();
+    }
 }
