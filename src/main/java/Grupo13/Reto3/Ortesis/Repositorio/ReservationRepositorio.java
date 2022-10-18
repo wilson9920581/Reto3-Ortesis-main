@@ -8,12 +8,9 @@ import Grupo13.Reto3.Ortesis.Interface.ReservationInterface;
 import Grupo13.Reto3.Ortesis.Modelo.Client;
 import Grupo13.Reto3.Ortesis.Modelo.Reservation;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
-import Grupo13.Reto3.Ortesis.Report.ClientContact;
+import Grupo13.Reto3.Ortesis.reporte.ContadorClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -39,18 +36,17 @@ public class ReservationRepositorio {
     public Reservation save(Reservation reservation) {
         return reservationInterface.save(reservation);
     }
-    
+
     public void delete(Reservation reservation){
         reservationInterface.delete(reservation);
     }
 
-
-    public List<ClientContact> getTopClients() {
-        List<ClientContact> resultado = new ArrayList<>();
+    public List<ContadorClient> getTopClients() {
+        List<ContadorClient> resultado = new ArrayList<>();
         List<Object[]> reporte = reservationInterface.countTotalReservationByClient();
 
         for (int i = 0; i < reporte.size(); i++) {
-            resultado.add(new ClientContact((Long) reporte.get(i)[1], (Client) reporte.get(i)[0]));
+            resultado.add(new ContadorClient((Long) reporte.get(i)[1], (Client) reporte.get(i)[0]));
         }
         return resultado;
     }
@@ -61,6 +57,11 @@ public class ReservationRepositorio {
     public List<Reservation> getReservacionByStatus(String status){
         return reservationInterface.findAllByStatus(status);
     }
+    //public   List<Object[]> reporteClientes() {
+    // return reservationInterface.reporteClientes();
+
+    //  }
 
 
 }
+

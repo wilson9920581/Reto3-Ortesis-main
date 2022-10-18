@@ -5,11 +5,12 @@
 package Grupo13.Reto3.Ortesis.Controlador;
 
 import Grupo13.Reto3.Ortesis.Modelo.Reservation;
-import Grupo13.Reto3.Ortesis.Report.ClientContact;
-import Grupo13.Reto3.Ortesis.Report.StatusReserve;
 import Grupo13.Reto3.Ortesis.Servicio.ReservationServicio;
 import java.util.List;
 import java.util.Optional;
+
+import Grupo13.Reto3.Ortesis.reporte.ContadorClient;
+import Grupo13.Reto3.Ortesis.reporte.StatusReservas;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/Reservation")
 @CrossOrigin(origins ="*",methods ={RequestMethod.GET,RequestMethod.POST,RequestMethod.DELETE,RequestMethod.PUT})
 public class ReservationControlador {
-       @Autowired
+    @Autowired
     private ReservationServicio reservationServicio;
     @GetMapping("/all")
     public List<Reservation> getAll(){
@@ -35,12 +36,12 @@ public class ReservationControlador {
     public Reservation save(@RequestBody Reservation reservation) {
         return reservationServicio.save(reservation);
     }
-     @PutMapping("/update")
+    @PutMapping("/update")
     @ResponseStatus(HttpStatus.CREATED)
     public Reservation update(@RequestBody Reservation reservation) {
         return reservationServicio.update(reservation);
     }
-    
+
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public boolean delete(@PathVariable("id") int id){
@@ -48,7 +49,7 @@ public class ReservationControlador {
     }
 
     @GetMapping("/report-status")
-    public StatusReserve getStatusReservas() {
+    public StatusReservas getStatusReservas() {
         return reservationServicio.getReservacionStatus();
     }
 
@@ -58,7 +59,9 @@ public class ReservationControlador {
     }
 
     @GetMapping("/report-clients")
-    public List<ClientContact> getReservationReportClient() {
+    public List<ContadorClient> getReservationReportClient() {
         return reservationServicio.getTopClients();
     }
+
 }
+
